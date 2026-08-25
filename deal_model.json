@@ -1,0 +1,95 @@
+{
+  "categories": {
+    "Computers&Accessories": {
+      "log_mean_price": 6.050969996096404,
+      "typical_price": 424.52461761523836,
+      "std": 0.9787530218257793,
+      "sample_count": 453,
+      "min_price": 39.0,
+      "max_price": 37247.0
+    },
+    "Electronics": {
+      "log_mean_price": 6.981813765426444,
+      "typical_price": 1076.8697859392119,
+      "std": 1.6083224693822105,
+      "sample_count": 315,
+      "min_price": 79.0,
+      "max_price": 44999.0
+    },
+    "Headphones&Earbuds": {
+      "log_mean_price": 6.591849619924718,
+      "typical_price": 729.1282335678443,
+      "std": 0.787138489908201,
+      "sample_count": 66,
+      "min_price": 99.0,
+      "max_price": 4790.0
+    },
+    "Home&Kitchen": {
+      "log_mean_price": 7.14646323437073,
+      "typical_price": 1269.607700348622,
+      "std": 1.0993787264572585,
+      "sample_count": 448,
+      "min_price": 79.0,
+      "max_price": 42990.0
+    },
+    "Laptops": {
+      "log_mean_price": 10.814733735626415,
+      "typical_price": 49748.40767920671,
+      "std": 0.6238405824958502,
+      "sample_count": 1303,
+      "min_price": 9270.72,
+      "max_price": 324954.72
+    },
+    "Mobiles": {
+      "log_mean_price": 10.532858143174494,
+      "typical_price": 37528.58330847436,
+      "std": 0.7781379525543745,
+      "sample_count": 930,
+      "min_price": 5999.0,
+      "max_price": 274999.0
+    },
+    "OfficeProducts": {
+      "log_mean_price": 5.34687439005198,
+      "typical_price": 209.95104616703367,
+      "std": 0.8190834468177599,
+      "sample_count": 31,
+      "min_price": 50.0,
+      "max_price": 1399.0
+    },
+    "Other": {
+      "log_mean_price": 6.284379784354634,
+      "typical_price": 536.1316702501116,
+      "std": 0.9012149700365564,
+      "sample_count": 7,
+      "min_price": 150.0,
+      "max_price": 2339.0
+    },
+    "Televisions": {
+      "log_mean_price": 9.876940279174484,
+      "typical_price": 19476.040157058374,
+      "std": 0.6098437682740705,
+      "sample_count": 69,
+      "min_price": 5699.0,
+      "max_price": 77990.0
+    },
+    "Wearables": {
+      "log_mean_price": 7.601212430437619,
+      "typical_price": 2000.620037882958,
+      "std": 0.5976067620862748,
+      "sample_count": 76,
+      "min_price": 249.0,
+      "max_price": 12000.0
+    }
+  },
+  "trusted_categories": [
+    "Laptops",
+    "Mobiles",
+    "Computers&Accessories",
+    "Home&Kitchen",
+    "Electronics",
+    "Wearables",
+    "Televisions",
+    "Headphones&Earbuds",
+    "OfficeProducts"
+  ]
+}

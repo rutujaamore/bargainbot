@@ -1,0 +1,9 @@
+flask
+selenium
+webdriver-manager
+beautifulsoup4
+requests
+rapidfuzz
+scikit-learn
+pandas
+numpy
