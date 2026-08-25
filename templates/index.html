@@ -1,1 +1,1774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BargainBot &mdash; know the real price</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+  :root {
+    --ink: #14182b;
+    --ink-soft: #565b78;
+    --paper: #f4f5fa;
+    --card: #ffffff;
+    --line: #dde0ea;
+    --gold: #e7a93c;
+    --gold-deep: #b9822a;
+    --indigo: #2f5fde;
+    --green: #1f8a5f;
+    --red: #c3492f;
+    --radius: 18px;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    background-image:
+      radial-gradient(
+        circle at 1px 1px,
+        rgba(20,24,43,0.06) 1px,
+        transparent 0
+      );
+    background-size: 26px 26px;
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+  }
+
+  .mono {
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 24px 90px;
+  }
+
+  /* ---------- Header ---------- */
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 0 18px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .brand-mark {
+    width: 34px;
+    height: 34px;
+    background: var(--ink);
+    border-radius: 8px;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .brand-mark::after {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: 8px;
+    height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+  }
+
+  .brand-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+  }
+
+  .live-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #e8f5ee;
+    color: var(--green);
+    padding: 5px 11px;
+    border-radius: 100px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  .live-pill::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+  }
+
+  /* ---------- Hero / search tag ---------- */
+
+  .hero {
+    text-align: center;
+    padding: 46px 0 8px;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    background: #fbf1de;
+    border: 1px dashed #e2c286;
+    padding: 6px 14px;
+    border-radius: 100px;
+    margin-bottom: 22px;
+  }
+
+  h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: clamp(34px, 5.4vw, 52px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    margin: 0 0 18px;
+  }
+
+  h1 span {
+    color: var(--indigo);
+  }
+
+  .subtext {
+    color: var(--ink-soft);
+    font-size: 16.5px;
+    line-height: 1.6;
+    max-width: 480px;
+    margin: 0 auto 34px;
+  }
+
+  /* ---------- Search card ---------- */
+
+  .tag-card {
+    position: relative;
+    background: var(--card);
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    box-shadow:
+      0 1px 2px rgba(20,24,43,0.04),
+      0 16px 36px -20px rgba(20,24,43,0.22);
+  }
+
+  .tag-card::before {
+    content: "";
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 15px;
+    height: 15px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    z-index: 2;
+  }
+
+  .search-tag {
+    padding: 26px 28px 20px;
+    text-align: left;
+  }
+
+  .search-row {
+    display: flex;
+    gap: 10px;
+    margin-left: 30px;
+  }
+
+  input[type="text"] {
+    flex: 1;
+    padding: 15px 16px;
+    border: 1.5px solid var(--line);
+    border-radius: 12px;
+    background: var(--paper);
+    font-family: 'Inter', sans-serif;
+    font-size: 15.5px;
+    color: var(--ink);
+  }
+
+  input[type="text"]:focus {
+    outline: none;
+    border-color: var(--indigo);
+    background: #fff;
+  }
+
+  input[type="text"]::placeholder {
+    color: #a3a7bd;
+  }
+
+  button.search-btn {
+    padding: 15px 24px;
+    background: var(--ink);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13.5px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  button.search-btn:hover {
+    background: var(--indigo);
+  }
+
+  .tear-line {
+    margin-top: 20px;
+    border-top: 1.5px dashed var(--line);
+    padding-top: 16px;
+    margin-left: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--ink-soft);
+  }
+
+  .tear-line span {
+    margin-right: 16px;
+    display: inline-block;
+  }
+
+  .tear-line span::before {
+    content: "✓ ";
+    color: var(--green);
+  }
+
+  @media (max-width: 560px) {
+    .search-row {
+      flex-direction: column;
+      margin-left: 0;
+    }
+
+    .tear-line {
+      margin-left: 0;
+    }
+
+    .tag-card::before {
+      display: none;
+    }
+  }
+
+  /* ---------- Trust strip ---------- */
+
+  .trust-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin: 30px 0 50px;
+  }
+
+  .trust-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px 16px;
+    text-align: center;
+  }
+
+  .trust-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--indigo);
+    margin-bottom: 4px;
+  }
+
+  .trust-label {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    line-height: 1.4;
+  }
+
+  @media (max-width: 760px) {
+    .trust-strip {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  /* ---------- How it works ---------- */
+
+  .how-section {
+    margin: 56px 0 60px;
+  }
+
+  .section-heading {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    text-align: center;
+    margin: 0 0 8px;
+  }
+
+  .section-subheading {
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 14.5px;
+    max-width: 520px;
+    margin: 0 auto 30px;
+    line-height: 1.6;
+  }
+
+  .how-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+
+  @media (max-width: 760px) {
+    .how-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .how-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 24px 22px;
+    position: relative;
+  }
+
+  .how-step {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: #fff;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 14px;
+  }
+
+  .how-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 16.5px;
+    margin-bottom: 8px;
+  }
+
+  .how-copy {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  .how-tag {
+    display: inline-block;
+    margin-top: 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    padding: 4px 9px;
+    border-radius: 100px;
+  }
+
+  .how-tag.trained {
+    background: #e8f5ee;
+    color: var(--green);
+  }
+
+  .how-tag.rulebased {
+    background: #eef0fb;
+    color: var(--indigo);
+  }
+
+  .how-tag.llm {
+    background: #fbf1de;
+    color: var(--gold-deep);
+  }
+
+  /* ---------- Meta line ---------- */
+
+  .meta-line {
+    text-align: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin: 26px 0 18px;
+  }
+
+  /* ---------- Banners ---------- */
+
+  .banner {
+    border-radius: 14px;
+    padding: 14px 18px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    margin-bottom: 20px;
+  }
+
+  .banner.error {
+    background: #fbeae5;
+    border: 1px solid #eabaa9;
+    color: var(--red);
+  }
+
+  .banner.warning {
+    background: #fdf3de;
+    border: 1px solid #eed69a;
+    color: #8a6a1f;
+  }
+
+  .banner.empty {
+    background: var(--card);
+    border: 1px dashed var(--line);
+    color: var(--ink-soft);
+    text-align: center;
+  }
+
+  .banner.success {
+    background: #e8f5ee;
+    border: 1px solid #cce8d9;
+    color: var(--green);
+  }
+
+  /* ---------- Provenance badge ---------- */
+
+  .provenance-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 9px 14px;
+    margin: -12px 0 26px;
+  }
+
+  .provenance-badge.good {
+    color: var(--green);
+  }
+
+  .provenance-badge.limited {
+    color: var(--gold-deep);
+  }
+
+  .provenance-badge.none {
+    color: var(--ink-soft);
+  }
+
+  /* ---------- Price alert signup ---------- */
+
+  .alert-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 24px 26px;
+    margin-top: 40px;
+  }
+
+  .alert-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    margin-bottom: 8px;
+  }
+
+  .alert-copy {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin: 0 0 16px;
+  }
+
+  .alert-form {
+    display: grid;
+    grid-template-columns: 2fr 1.6fr 1fr auto;
+    gap: 10px;
+  }
+
+  .alert-form input {
+    padding: 13px 14px;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    background: var(--paper);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+  }
+
+  .alert-form input:focus {
+    outline: none;
+    border-color: var(--indigo);
+    background: #fff;
+  }
+
+  .alert-form button {
+    white-space: nowrap;
+  }
+
+  @media (max-width: 720px) {
+    .alert-form {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ---------- Winning tag ---------- */
+
+  .winner-tag {
+    position: relative;
+    background: var(--card);
+    border: 1.5px solid var(--ink);
+    border-radius: var(--radius);
+    padding: 28px 26px 24px 46px;
+    margin-bottom: 26px;
+    overflow: visible;
+  }
+
+  .winner-tag::before {
+    content: "";
+    position: absolute;
+    top: 24px;
+    left: 22px;
+    width: 15px;
+    height: 15px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 50%;
+  }
+
+  .seal {
+    position: absolute;
+    top: -16px;
+    right: 22px;
+    background: var(--gold);
+    color: var(--ink);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    padding: 7px 13px;
+    border-radius: 8px;
+    border: 1.5px dashed rgba(20,24,43,0.35);
+    transform: rotate(-5deg);
+  }
+
+  .seal.tie {
+    background: #dfe3ee;
+  }
+
+  .winner-title {
+    font-size: 14.5px;
+    color: var(--ink-soft);
+    margin-bottom: 10px;
+    max-width: 90%;
+  }
+
+  .winner-price {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 700;
+    font-size: 34px;
+    letter-spacing: -0.01em;
+    margin-bottom: 10px;
+  }
+
+  a.view-link {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--indigo);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--indigo);
+    padding-bottom: 1px;
+  }
+
+  a.view-link:hover {
+    color: var(--ink);
+    border-color: var(--ink);
+  }
+
+  .disclaimer {
+    font-size: 12px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin: -8px 0 28px;
+  }
+
+  /* ---------- Source cards ---------- */
+
+  .source-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 560px) {
+    .source-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .source-tag {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 20px 18px 18px 34px;
+    border-top: 3px solid var(--gold);
+  }
+
+  .source-tag.flipkart {
+    border-top-color: var(--indigo);
+  }
+
+  .source-tag::before {
+    content: "";
+    position: absolute;
+    top: 21px;
+    left: 15px;
+    width: 10px;
+    height: 10px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 50%;
+  }
+
+  .source-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    margin-bottom: 10px;
+  }
+
+  .source-tag.flipkart .source-label {
+    color: var(--indigo);
+  }
+
+  .source-title {
+    font-size: 13.5px;
+    line-height: 1.45;
+    margin-bottom: 12px;
+    min-height: 38px;
+  }
+
+  .source-price {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 700;
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+
+  .source-empty {
+    color: var(--ink-soft);
+    font-size: 13px;
+  }
+
+  .mini-score {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 4px 8px;
+    margin-bottom: 10px;
+  }
+
+  .mini-score b {
+    color: var(--ink);
+  }
+
+  /* ---------- NEW: Product Match Confidence ---------- */
+
+  .match-strip {
+    margin-top: 16px;
+    margin-bottom: 20px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    text-align: center;
+  }
+
+  .match-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .match-confidence {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .match-status {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    padding: 4px 8px;
+    border-radius: 8px;
+    background: #e8f5ee;
+    color: var(--green);
+    border: 1px solid #cce8d9;
+  }
+
+  .match-status.low {
+    background: #fbeae5;
+    color: var(--red);
+    border-color: #eabaa9;
+  }
+
+  .match-divider {
+    color: var(--line);
+  }
+
+  /* ---------- Prediction card ---------- */
+
+  .predict-card {
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 24px 24px 22px 40px;
+    margin-top: 20px;
+  }
+
+  .predict-card::before {
+    content: "";
+    position: absolute;
+    top: 22px;
+    left: 18px;
+    width: 12px;
+    height: 12px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 50%;
+  }
+
+  .predict-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+  }
+
+  .predict-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+
+  .deal-score-block {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .deal-score-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 700;
+    font-size: 30px;
+  }
+
+  .deal-score-label {
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+
+  .verdict-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    border-radius: 100px;
+  }
+
+  .verdict-badge.buy {
+    background: #e8f5ee;
+    color: var(--green);
+  }
+
+  .verdict-badge.wait {
+    background: #fdf3de;
+    color: #8a6a1f;
+  }
+
+  .predict-reason {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--ink);
+    margin-bottom: 18px;
+  }
+
+  .sales-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* ---------- Typical price context (new) ---------- */
+
+  .typical-price-line {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .typical-price-line b {
+    color: var(--ink);
+  }
+
+  .diff-pill {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 100px;
+  }
+
+  .diff-pill.above {
+    background: #fdf3de;
+    color: #8a6a1f;
+  }
+
+  .diff-pill.below {
+    background: #e8f5ee;
+    color: var(--green);
+  }
+
+  .diff-pill.neutral {
+    background: #eef0fb;
+    color: var(--indigo);
+  }
+
+  .typical-price-note {
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin: 0 0 18px;
+  }
+
+  /* ---------- Real price history bar (new) ---------- */
+
+  .history-bar-block {
+    margin-bottom: 20px;
+    padding: 14px 16px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+  }
+
+  .history-bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+  }
+
+  .history-bar-track {
+    position: relative;
+    height: 8px;
+    border-radius: 100px;
+    background: linear-gradient(90deg, #cce8d9, #eed69a);
+    margin-bottom: 10px;
+  }
+
+  .history-bar-marker {
+    position: absolute;
+    top: 50%;
+    width: 14px;
+    height: 14px;
+    background: var(--ink);
+    border: 2px solid #fff;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 1px 4px rgba(20,24,43,0.3);
+  }
+
+  .history-bar-caption {
+    font-size: 12px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+
+  .sale-pill {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    background: var(--paper);
+    border: 1px dashed var(--line);
+    border-radius: 10px;
+    padding: 7px 11px;
+    color: var(--ink-soft);
+  }
+
+  .sale-pill b {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* ---------- Footer ---------- */
+
+  footer {
+    text-align: center;
+    margin-top: 60px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: #9a9eb5;
+  }
+
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+  <!-- ========================================================= -->
+  <!-- HEADER -->
+  <!-- ========================================================= -->
+
+  <header>
+
+    <div class="brand">
+      <div class="brand-mark"></div>
+      <div class="brand-name">BargainBot</div>
+    </div>
+
+    <div class="header-right">
+      <span class="live-pill">Live prices</span>
+      <span>Smart shopping for India</span>
+    </div>
+
+  </header>
+
+
+  <!-- ========================================================= -->
+  <!-- HERO -->
+  <!-- ========================================================= -->
+
+  <div class="hero">
+
+    <span class="eyebrow">
+      &#9679; Live price tags &middot; Amazon + Flipkart
+    </span>
+
+    <h1>
+      Every price tag,<br>
+      <span>checked twice.</span>
+    </h1>
+
+    <p class="subtext">
+      BargainBot checks Amazon and Flipkart in real time,
+      watches where the price is headed next, and tells you
+      the exact moment worth waiting for.
+    </p>
+
+  </div>
+
+
+  <!-- ========================================================= -->
+  <!-- SEARCH CARD -->
+  <!-- ========================================================= -->
+
+  <div class="tag-card">
+
+    <form class="search-tag" method="POST">
+
+      <div class="search-row">
+
+        <input
+          type="text"
+          name="product"
+          placeholder="Search a product&hellip; e.g. iPhone 17"
+          value="{{ product or '' }}"
+          required
+        >
+
+        <button
+          type="submit"
+          class="search-btn"
+        >
+          Compare price &rarr;
+        </button>
+
+      </div>
+
+
+      <div class="tear-line">
+
+        <span>Amazon India</span>
+        <span>Flipkart</span>
+        <span>Real matches only</span>
+        <span>Live, not cached</span>
+
+      </div>
+
+    </form>
+
+  </div>
+
+
+  <!-- ========================================================= -->
+  <!-- TRUST STRIP (new - real facts about the system, not fake stats) -->
+  <!-- ========================================================= -->
+
+  <div class="trust-strip">
+
+    <div class="trust-card">
+      <div class="trust-num">2</div>
+      <div class="trust-label">Platforms scraped live<br>Amazon India + Flipkart</div>
+    </div>
+
+    <div class="trust-card">
+      <div class="trust-num">3,698</div>
+      <div class="trust-label">Real product rows<br>trained the Deal Score model</div>
+    </div>
+
+    <div class="trust-card">
+      <div class="trust-num">21</div>
+      <div class="trust-label">Indian festival sales<br>tracked with real dates</div>
+    </div>
+
+    <div class="trust-card">
+      <div class="trust-num">0</div>
+      <div class="trust-label">Fabricated data points<br>shown as real history</div>
+    </div>
+
+  </div>
+
+
+  <!-- ========================================================= -->
+  <!-- HOW IT WORKS (new) -->
+  <!-- ========================================================= -->
+
+  <div class="how-section">
+
+    <h2 class="section-heading">How the verdict is built</h2>
+    <p class="section-subheading">
+      Three separate, transparent layers - not one black box.
+      Each one is honest about what it actually knows.
+    </p>
+
+    <div class="how-grid">
+
+      <div class="how-card">
+        <div class="how-step">1</div>
+        <div class="how-title">Deal Score</div>
+        <div class="how-copy">
+          A Linear Regression model trained on thousands of real Amazon/
+          Kaggle prices learns the typical price for a category. Today's
+          live price is compared against it - and if the price is
+          outside anything the model has actually seen, it says
+          "limited data" instead of guessing.
+        </div>
+        <span class="how-tag trained">Genuinely trained</span>
+      </div>
+
+      <div class="how-card">
+        <div class="how-step">2</div>
+        <div class="how-title">Festival Calendar</div>
+        <div class="how-copy">
+          A real, hardcoded calendar of 21 known Indian sale events
+          (Diwali, Big Billion Days, Prime Day...) with honest low-high
+          discount ranges - not a model prediction, just a lookup of
+          dates that are public knowledge.
+        </div>
+        <span class="how-tag rulebased">Rule-based lookup</span>
+      </div>
+
+      <div class="how-card">
+        <div class="how-step">3</div>
+        <div class="how-title">AI Explanation</div>
+        <div class="how-copy">
+          Every number above is calculated first. Groq's Llama 3.3 only
+          turns those already-computed facts into one plain sentence -
+          it's never allowed to invent a price, date, or percentage.
+        </div>
+        <span class="how-tag llm">Phrasing only</span>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ========================================================= -->
+  <!-- ALERT CONFIRMATION (new - shown after /set-alert redirect) -->
+  <!-- ========================================================= -->
+
+  {% if alert_message %}
+
+    <div class="banner success">
+      {{ alert_message }}
+    </div>
+
+  {% endif %}
+
+  {% if alert_error %}
+
+    <div class="banner error">
+      {{ alert_error }}
+    </div>
+
+  {% endif %}
+
+
+  <!-- ========================================================= -->
+  <!-- RESULTS -->
+  <!-- ========================================================= -->
+
+  {% if product %}
+
+    <p class="meta-line">
+      "{{ product }}" &middot; checked {{ time }}
+    </p>
+
+
+    <!-- ======================================================= -->
+    <!-- ERRORS -->
+    <!-- ======================================================= -->
+
+    {% if errors %}
+
+      <div class="banner error">
+
+        {% for err in errors %}
+          <div>{{ err }}</div>
+        {% endfor %}
+
+      </div>
+
+    {% endif %}
+
+
+    <!-- ======================================================= -->
+    <!-- PRODUCT MISMATCH WARNING -->
+    <!-- ======================================================= -->
+
+    {% if mismatch_warning %}
+
+      <div class="banner warning">
+        {{ mismatch_warning }}
+      </div>
+
+    {% endif %}
+
+
+    <!-- ======================================================= -->
+    <!-- BEST PRICE -->
+    <!-- ======================================================= -->
+
+    {% if best_deal %}
+
+      <div class="winner-tag">
+
+        <span class="seal {% if best_deal_tied %}tie{% endif %}">
+
+          {% if best_deal_tied %}
+            Same price
+          {% else %}
+            Best price &mdash; {{ best_deal.source }}
+          {% endif %}
+
+        </span>
+
+
+        <div class="winner-title">
+          {{ best_deal.title }}
+        </div>
+
+
+        <div class="winner-price mono">
+          {{ best_deal.price or 'Price not listed' }}
+        </div>
+
+
+        <a
+          class="view-link"
+          href="{{ best_deal.link }}"
+          target="_blank"
+        >
+          View listing &#8599;
+        </a>
+
+      </div>
+
+
+      <!-- =====================================================
+           REAL PRICE HISTORY PROVENANCE (new)
+
+           Honest about how much real history we actually have -
+           never padded with forecasted or fabricated data points.
+           ===================================================== -->
+
+      {% if history_provenance %}
+
+        <div class="provenance-badge {{ history_provenance_level }}">
+
+          {% if history_provenance_level == 'good' %}
+            &#9679;
+          {% elif history_provenance_level == 'limited' %}
+            &#9679;
+          {% else %}
+            &#9675;
+          {% endif %}
+
+          {{ history_provenance }}
+
+          {% if history_analysis and history_analysis.statistics.count >= 1 %}
+
+            &middot; low ₹{{ history_analysis.statistics.minimum|int }}
+            &middot; high ₹{{ history_analysis.statistics.maximum|int }}
+
+          {% endif %}
+
+        </div>
+
+      {% endif %}
+
+    {% else %}
+
+      <div class="banner empty">
+
+        No confident match found on either site for
+        &ldquo;{{ product }}&rdquo;.
+
+        Try a more specific name &mdash; include the model
+        or generation number.
+
+      </div>
+
+    {% endif %}
+
+
+    <!-- ======================================================= -->
+    <!-- AMAZON + FLIPKART -->
+    <!-- ======================================================= -->
+
+    <div class="source-grid">
+
+
+      <!-- ================= AMAZON ================= -->
+
+      <div class="source-tag">
+
+        <div class="source-label">
+          Amazon
+        </div>
+
+
+        {% if amazon_results %}
+
+          {% set item = amazon_results[0] %}
+
+
+          <div class="source-title">
+            {{ item.title }}
+          </div>
+
+
+          <div class="source-price mono">
+            {{ item.price or '&mdash;' }}
+          </div>
+
+
+          {% if amazon_deal %}
+
+            {% if amazon_deal.confident %}
+
+              <div class="mini-score">
+                Deal Score
+                <b>
+                  {{ amazon_deal.deal_score }}/100
+                </b>
+              </div>
+
+              <br>
+
+            {% else %}
+
+              <div class="mini-score">
+                Deal Score:
+                <b>limited data</b>
+              </div>
+
+              <br>
+
+            {% endif %}
+
+          {% endif %}
+
+
+          <a
+            class="view-link"
+            href="{{ item.link }}"
+            target="_blank"
+          >
+            View listing &#8599;
+          </a>
+
+
+        {% else %}
+
+          <div class="source-empty">
+            No matching product found.
+          </div>
+
+        {% endif %}
+
+      </div>
+
+
+      <!-- ================= FLIPKART ================= -->
+
+      <div class="source-tag flipkart">
+
+        <div class="source-label">
+          Flipkart
+        </div>
+
+
+        {% if flipkart_results %}
+
+          {% set item = flipkart_results[0] %}
+
+
+          <div class="source-title">
+            {{ item.title }}
+          </div>
+
+
+          <div class="source-price mono">
+            {{ item.price or '&mdash;' }}
+          </div>
+
+
+          {% if flipkart_deal %}
+
+            {% if flipkart_deal.confident %}
+
+              <div class="mini-score">
+                Deal Score
+                <b>
+                  {{ flipkart_deal.deal_score }}/100
+                </b>
+              </div>
+
+              <br>
+
+            {% else %}
+
+              <div class="mini-score">
+                Deal Score:
+                <b>limited data</b>
+              </div>
+
+              <br>
+
+            {% endif %}
+
+          {% endif %}
+
+
+          <a
+            class="view-link"
+            href="{{ item.link }}"
+            target="_blank"
+          >
+            View listing &#8599;
+          </a>
+
+
+        {% else %}
+
+          <div class="source-empty">
+            No matching product found.
+          </div>
+
+        {% endif %}
+
+      </div>
+
+    </div>
+
+
+    <!-- ======================================================= -->
+    <!-- NEW: PRODUCT MATCH CONFIDENCE -->
+    <!-- ======================================================= -->
+
+    {% if amazon_results and flipkart_results and match_confidence is not none %}
+
+      <div class="match-strip">
+
+        <span class="match-label">
+          Product Match
+        </span>
+
+
+        <span class="match-confidence">
+          {{ match_confidence }}%
+        </span>
+
+
+        <span class="match-label">
+          Match Confidence
+        </span>
+
+
+        <span class="match-divider">
+          &middot;
+        </span>
+
+
+        <span
+          class="match-status {% if not same_product %}low{% endif %}"
+        >
+
+          {% if same_product %}
+
+            &#10003; {{ match_status }}
+
+          {% else %}
+
+            &#9888; {{ match_status }}
+
+          {% endif %}
+
+        </span>
+
+      </div>
+
+    {% endif %}
+
+
+    <!-- ======================================================= -->
+    <!-- PRICE PREDICTION -->
+    <!-- ======================================================= -->
+
+    {% if suggestion %}
+
+      <div class="predict-card">
+
+
+        <div class="predict-eyebrow">
+
+          Price Prediction
+          &middot;
+          {{ suggestion.category.replace('&', ' & ') }}
+
+        </div>
+
+
+        <div class="predict-top">
+
+
+          <!-- DEAL SCORE -->
+
+          <div class="deal-score-block">
+
+            {% if suggestion.confident %}
+
+              <span class="deal-score-num mono">
+                {{ suggestion.deal_score }}
+              </span>
+
+              <span class="deal-score-label">
+                / 100 deal score
+              </span>
+
+            {% else %}
+
+              <span
+                class="deal-score-num mono"
+                style="font-size: 18px;"
+              >
+                Limited data
+              </span>
+
+              <span class="deal-score-label">
+                not enough training data for this price range
+              </span>
+
+            {% endif %}
+
+          </div>
+
+
+          <!-- BUY / WAIT -->
+
+          <span
+            class="verdict-badge
+            {% if suggestion.verdict == 'BUY_NOW' %}
+              buy
+            {% else %}
+              wait
+            {% endif %}"
+          >
+
+            {% if suggestion.verdict == 'BUY_NOW' %}
+
+              Buy Now
+
+            {% else %}
+
+              Wait
+
+            {% endif %}
+
+          </span>
+
+
+        </div>
+
+
+        <!-- TYPICAL PRICE CONTEXT (new) -->
+        <!-- Explains WHY the score is what it is, instead of leaving a
+             bare number that looks arbitrary. -->
+
+        {% if suggestion.confident and suggestion.typical_price %}
+
+          <div class="typical-price-line">
+
+            Typical {{ suggestion.category.replace('&', ' & ') }} price
+            (from real training data):
+            <b>₹{{ suggestion.typical_price|int }}</b>
+
+            {% if best_deal_price_int %}
+
+              &middot; this listing:
+              <b>₹{{ best_deal_price_int|int }}</b>
+
+              {% set diff_pct = ((best_deal_price_int - suggestion.typical_price) / suggestion.typical_price * 100)|round|int %}
+
+              {% if diff_pct > 5 %}
+                <span class="diff-pill above">+{{ diff_pct }}% above typical</span>
+              {% elif diff_pct < -5 %}
+                <span class="diff-pill below">{{ diff_pct }}% below typical</span>
+              {% else %}
+                <span class="diff-pill neutral">about typical</span>
+              {% endif %}
+
+            {% endif %}
+
+          </div>
+
+          <p class="typical-price-note">
+            "Typical" is the category average across ALL products in it -
+            budget to premium. A flagship priced above average is normal
+            for that segment; the score reflects distance from the
+            average, not product quality.
+          </p>
+
+        {% endif %}
+
+
+        <!-- REAL PRICE HISTORY BAR (new - only real observed data) -->
+
+        {% if history_analysis and history_analysis.current_analysis.available %}
+
+          {% set ca = history_analysis.current_analysis %}
+
+          <div class="history-bar-block">
+
+            <div class="history-bar-label">
+              <span>Lowest seen: ₹{{ ca.historical_minimum|int }}</span>
+              <span>Highest seen: ₹{{ ca.historical_maximum|int }}</span>
+            </div>
+
+            <div class="history-bar-track">
+              <div
+                class="history-bar-marker"
+                style="left: {{ ca.historical_position_percent }}%;"
+                title="Current price position"
+              ></div>
+            </div>
+
+            <div class="history-bar-caption">
+              Current price ₹{{ ca.current_price|int }} sits at the
+              {{ ca.historical_position_percent|int }}th percentile of
+              {{ ca.history_count }} real observation{{ 's' if ca.history_count != 1 else '' }}
+              for this exact listing.
+            </div>
+
+          </div>
+
+        {% endif %}
+
+
+        <!-- CURRENT REASON -->
+
+        <p class="predict-reason">
+          {{ suggestion.reason }}
+        </p>
+
+
+        <!-- UPCOMING SALES -->
+
+        <div class="sales-strip">
+
+          {% for sale in suggestion.upcoming_sales %}
+
+            <span class="sale-pill">
+
+              <b>
+                {{ sale.name }}
+              </b>
+
+              &middot;
+
+              {{ sale.days_away }}d
+
+              &middot;
+
+              ~{{ sale.discount_avg|int }}% off
+
+            </span>
+
+          {% endfor %}
+
+        </div>
+
+
+      </div>
+
+    {% endif %}
+
+
+  {% endif %}
+
+
+  <!-- ========================================================= -->
+  <!-- PRICE ALERT SIGNUP (new) -->
+  <!-- ========================================================= -->
+
+  <div class="alert-card">
+
+    <div class="alert-eyebrow">
+      &#128276; Price Drop Alert
+    </div>
+
+    <p class="alert-copy">
+      Tell us a product and your target price - we'll re-check it
+      every few hours and email you the moment it drops there or below.
+    </p>
+
+    <form class="alert-form" method="POST" action="{{ url_for('set_alert') }}">
+
+      <input
+        type="text"
+        name="alert_product"
+        placeholder="Product name&hellip; e.g. iPhone 17 128GB"
+        value="{{ product or '' }}"
+        required
+      >
+
+      <input
+        type="email"
+        name="alert_email"
+        placeholder="you@example.com"
+        required
+      >
+
+      <input
+        type="number"
+        name="alert_target_price"
+        placeholder="Target price (&#8377;)"
+        min="1"
+        required
+      >
+
+      <button type="submit" class="search-btn">
+        Notify me
+      </button>
+
+    </form>
+
+  </div>
+
+
+  <!-- ========================================================= -->
+  <!-- FOOTER -->
+  <!-- ========================================================= -->
+
+  <footer>
+    BargainBot &middot; live comparison &middot; smarter shopping
+  </footer>
+
+
+</div>
+
+</body>
+</html>
